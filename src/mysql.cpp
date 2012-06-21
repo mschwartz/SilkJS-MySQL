@@ -1,4 +1,4 @@
-#include "SilkJS.h"
+#include <SilkJS.h>
 #ifdef __APPLE__
 #include <mysql.h>
 #else
@@ -838,7 +838,9 @@ JSVAL close (JSARGS args) {
     return Undefined();
 }
 
-extern "C" void exports () {
+// extern "C" {
+
+extern "C" JSOBJ getExports () {
     JSOBJT o = ObjectTemplate::New();
     o->Set(String::New("connect"), FunctionTemplate::New(connect));
     o->Set(String::New("selectDb"), FunctionTemplate::New(select_db));
@@ -884,6 +886,7 @@ extern "C" void exports () {
     o->Set(String::New("store_result"), FunctionTemplate::New(store_result));
     o->Set(String::New("real_connect"), FunctionTemplate::New(real_connect));
     o->Set(String::New("query"), FunctionTemplate::New(query));
-    return o;
+    return o->NewInstance();
 }
 
+// }
