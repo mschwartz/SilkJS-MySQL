@@ -1,18 +1,23 @@
-OBJ=src/mysql.o
+UNAME := $(shell uname -s)
 
-V8LIB_DIR=/usr/local/silkjs/src/v8
+ifeq ($(UNAME),Darwin)
+    MAKEFILE=Makefile.osx
+else
+    MAKEFILE=Makefile
+endif
 
-CCFLAGS=-fPIC -I/usr/local/silkjs/src -I$(V8LIB_DIR)/include
-
-V8LIB_DIR=/usr/local/silkjs/src/v8
-
-V8=	$(V8LIB_DIR)/libv8_base.a $(V8LIB_DIR)/libv8_snapshot.a
-
-.cpp.o:
-	g++ -c $(CCFLAGS) -o $*.o $*.cpp
-
-all:	$(OBJ)
-	gcc -shared -Wl,-soname,mysql_module.so -o mysql_module.so $(OBJ) -lmysqlclient -L$(V8LIB_DIR) -lv8 
+all:
+	cd src && make -f$(MAKEFILE)
+	cp src/mysql_module.so .
 
 clean:
-	@rm src/*.o
+	cd src && make -f$(MAKEFILE) clean
+
+realclean:
+	cd src && make -f$(MAKEFILE) realclean
+
+install:
+	cd src && make -f$(MAKEFILE) install
+
+uninstall:
+	cd src && make -f$(MAKEFILE) uninstall
