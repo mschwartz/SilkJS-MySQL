@@ -15,4 +15,7 @@ all:	$(OBJ)
 	gcc -shared -Wl,-soname,mysql_module.so -o mysql_module.so $(OBJ) -lmysqlclient -L$(V8LIB_DIR) -lv8 
 
 clean:
-	@rm src/*.o
+	rm -f src/*.o src/*.so mysql_module.so
+
+realclean:
+	rm -f src/*.o src/*.so mysql_module.so
